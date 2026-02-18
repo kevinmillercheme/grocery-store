@@ -35,7 +35,7 @@ function logNames(items) {
  */
 function getUppercaseNames(items) {
   let upperName = items.map((el) => el.name.toUpperCase());
-  console.log(upperName);
+  return upperName;
 }
 
 /**
@@ -48,7 +48,7 @@ function getItemById(items, id) {
       if (el.id === id)
       return el.name;
     });
-    console.log(nameById);
+    return nameById;
 }
 
 /**
@@ -57,7 +57,11 @@ function getItemById(items, id) {
  * @returns {number} the price of the item named `name` if found
  */
 function getItemPriceByName(items, name) {
-  // TODO: use a loop!
+  for (let i = 0; i < items.length; i++) {
+    if(items[i].name === name) {
+      return items[i].price;
+    }
+  }
 }
 
 /**
@@ -66,7 +70,8 @@ function getItemPriceByName(items, name) {
  * @returns {Item[]} array of items that belong to the given `category`
  */
 function getItemsByCategory(items, category) {
-  // TODO: use `filter`
+  let inCategory = items.filter((el) => el.category === category);
+  return inCategory;
 }
 
 /**
@@ -74,7 +79,9 @@ function getItemsByCategory(items, category) {
  * @returns {number} the total quantity of all items
  */
 function countItems(items) {
-  // TODO: use `reduce`
+  const initialVal = 0;
+  let totalQuant = items.reduce((acc, el) => acc + el.quantity, initialVal);
+  return totalQuant;
 }
 
 /**
@@ -82,7 +89,15 @@ function countItems(items) {
  * @returns {number} the cost of all given items
  */
 function getTotalPrice(items) {
-  // TODO: use `reduce`
+  const initialVal = 0;
+  let totalCost = items.reduce((acc, el) => acc + el.price, initialVal);
+  return totalCost;
+}
+
+function getPriceOfAll(items) {
+  const initialVal = 0;
+  let totalCost = items.reduce((acc, el) => acc + (el.price * el.quantity), initialVal);
+  return totalCost;
 }
 
 // === READ BUT DO NOT CHANGE THE CODE BELOW ===
@@ -97,7 +112,12 @@ console.log(`In total, we have ${countItems(inventory)} items in stock.`);
 
 const totalCost = getTotalPrice(inventory);
 console.log(
-  `It would cost $${totalCost?.toFixed(2)} to purchase everything in stock.`
+  `It would cost $${totalCost?.toFixed(2)} to purchase one of everything in stock.`
+);
+
+const totalCostAll = getPriceOfAll(inventory);
+console.log(
+  `It would cost $${totalCostAll?.toFixed(2)} to purchase ACTUALLY EVERYTHING in stock.`
 );
 
 const itemId = prompt("Enter the ID of an item:", "1");
@@ -106,7 +126,7 @@ console.log(getItemById(inventory, +itemId));
 
 const itemName = prompt("Enter the name of an item:", "apple");
 console.log(
-  `The price of ${itemName} is ${getItemPriceByName(inventory, itemName)}.`
+  `The price of ${itemName} is $${getItemPriceByName(inventory, itemName).toFixed(2)}.`
 );
 
 const category = prompt("Enter a category you would like to see:", "fruit");
